@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <title>jQuery Form Validation</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+      .error {
+        color: red;
+        font-size: 14px;
+      }
+      .input-error {
+        border: 2px solid red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Signup Form</h2>
+
+    <form id="myForm">
+      <div>
+        Name: <input type="text" id="name" /><br />
+        <span class="error" id="nameError"></span>
+      </div>
+      <br />
+
+      <div>
+        Email: <input type="text" id="email" /><br />
+        <span class="error" id="emailError"></span>
+      </div>
+      <br />
+
+      <div>
+        Password: <input type="password" id="password" /><br />
+        <span class="error" id="passwordError"></span>
+      </div>
+      <br />
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <script>
+      $("#myForm").submit(function (e) {
+        e.preventDefault(); // stop form submit
+
+        let isValid = true;
+
+        // Clear previous errors
+        $(".error").text("");
+        $("input").removeClass("input-error");
+
+        // Name validation
+        let name = $("#name").val().trim();
+        if (name === "") {
+          $("#nameError").text("Name is required");
+          $("#name").addClass("input-error");
+          isValid = false;
+        }
+
+        // Email validation
+        let email = $("#email").val().trim();
+        let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+        if (email === "") {
+          $("#emailError").text("Email is required");
+          $("#email").addClass("input-error");
+          isValid = false;
+        } else if (!emailPattern.test(email)) {
+          $("#emailError").text("Invalid email format");
+          $("#email").addClass("input-error");
+          isValid = false;
+        }
+
+        // Password validation
+        let password = $("#password").val();
+        if (password.length < 6) {
+          $("#passwordError").text("Password must be at least 6 characters");
+          $("#password").addClass("input-error");
+          isValid = false;
+        }
+
+        // If valid → submit or show success
+        if (isValid) {
+          alert("Form submitted successfully!");
+          // you can do AJAX here
+        }
+      });
+    </script>
+  </body>
+</html>
