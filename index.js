@@ -49,16 +49,17 @@ app.post('/tasks', (req, res) => {
 
 
 app.put('/Update/:id', (req, res) => {
-    const id = Number(req.params.id)
-    const taskIndex = tasks.find(i => i.id === id)
+    const id = Number(req.params.id);
+    const taskIndex = tasks.findIndex(i => i.id === id);
 
-    if (taskIndex) {
-        tasks[taskIndex] = { ...tasks[taskIndex], ...req.body }
-        return res.status(201).json(tasks)
+    if (taskIndex === -1) {
+        return res.status(404).json({ message: "Does not exist with this id" });
     }
 
-    return res.status(401).json({ message: "Does not exist with this id" })
-})
+    // Update only provided fields
+    tasks[taskIndex] = { ...tasks[taskIndex], ...req.body };
+    return res.status(200).json(tasks[taskIndex]);
+});
 
 
 //delete a task
